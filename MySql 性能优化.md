@@ -143,8 +143,10 @@ SELECT * FROM mytable WHEREt Name like'%admin'
     1，普通索引：index(MyIASM 中默认的BTREE类型索引，也是最长用到的索引)
     2，唯一索引：unique index ：  与普通索引类似，不同的是：索引的值必须唯一，但允许有空值（和主键不同）
     3，全文索引（FULLTEXT） ：仅可用于MyISAM 表
-    4，单列索引、多列索引
-    5，组合索引（最左前缀） ALTER TABLE article ADD INDEX index_titme_time (title(50),time(10))  相当于建立了 title,time 和title 两个索引。
+    4，单列索引、多列索引；建立组合，因为msql在同个请求下的多个单列索引只会msql认为最优的那条单列索引；
+    5，组合索引（最左前缀） 
+        ALTER TABLE article ADD INDEX index_titme_time (title(50),time(10))  相当于建立了 title,time 和title 两个索引。
+        
 
 # 索引的操作
 
