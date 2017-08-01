@@ -56,3 +56,31 @@ index: 这个连接类型对前面的表中的每一个记录联合进行完全�
 
 ALL:这个连接类型对于前面的每一个记录联合进行完全扫描，这一般比较糟糕，应该尽量避免
 ```
+
+
+
+EXPLAIN执行计划中有一列 key_len 用于表示本次查询中，所选择的索引长度有多少字节，通常我们可借此判断联合索引有多少列被选择了。
+
+在这里 key_len 大小的计算规则是：
+
+	* 一般地，key_len 等于索引列类型字节长度，例如int类型为4-bytes，bigint为8-bytes；
+
+	* 如果是字符串类型，还需要同时考虑字符集因素，例如：CHAR(30) UTF8则key_len至少是90-bytes；
+
+	* 若该列类型定义时允许NULL，其key_len还需要再加 1-bytes；
+
+	* 若该列类型为变长类型，例如 VARCHAR(TEXT\BLOB不允许整列创建索引，如果创建部分索引，也被视为动态列类型)，其key_len还需要再加 2-bytes;
+
+
+综上，看下面几个例子：
+
+![@1|center](../master/src/explain1.png)
+
+
+备注，key_len 只指示了WHERE中用于条件过滤时被选中的索引列，是不包含 ORDER BY/GROUP BY 这部分被选中的索引列。
+
+例如，有个联合索引 idx1(c1, c2, c3)，3个列均是INT NOT NULL，
+
+那么下面的这个SQL执行计划中，key_len的值是8而不是12：
+
+    SELECT  …  WHERE c1=? AND c2=? ORDER BY c1;
