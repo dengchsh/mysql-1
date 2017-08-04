@@ -32,5 +32,6 @@ sql分析函数 EXPLAIN
 
 ### processList 注意要点
 
+### 分库分表分布式数据库开发，全局唯一ID解决方案
 
 
