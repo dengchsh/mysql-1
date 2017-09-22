@@ -57,3 +57,12 @@ sql分析函数 EXPLAIN
 ### 索引相关--BTREE
     
     BTREE及其相关概念
+    
+### mysql设置权限
+
+    用root身份给其他用户设置权限
+    
+### utf8_mb4的一些坑
+    
+    utf8_mb4与版本相关的坑
+    utf8_mb4介绍
